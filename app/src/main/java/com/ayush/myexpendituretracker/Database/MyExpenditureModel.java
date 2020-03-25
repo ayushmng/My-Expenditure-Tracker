@@ -14,11 +14,8 @@ public class MyExpenditureModel {
     @ColumnInfo(name = "Date")
     private String Date;
 
-    @ColumnInfo(name = "MonthlyIncome")
-    private String MonthlyIncome;
-
-    @ColumnInfo(name = "Saving")
-    private String Saving;
+    @ColumnInfo(name = "Title")
+    private String Title;
 
     @ColumnInfo(name = "Expenditure")
     private String Expenditure;
@@ -40,20 +37,12 @@ public class MyExpenditureModel {
         Date = date;
     }
 
-    public String getMonthlyIncome() {
-        return MonthlyIncome;
+    public String getTitle() {
+        return Title;
     }
 
-    public void setMonthlyIncome(String monthlyIncome) {
-        MonthlyIncome = monthlyIncome;
-    }
-
-    public String getSaving() {
-        return Saving;
-    }
-
-    public void setSaving(String saving) {
-        Saving = saving;
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public String getExpenditure() {

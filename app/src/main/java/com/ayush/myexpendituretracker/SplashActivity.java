@@ -1,13 +1,12 @@
 package com.ayush.myexpendituretracker;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ayush.myexpendituretracker.Database.View.DashboardActivity;
 import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 
 public class SplashActivity extends AppCompatActivity {

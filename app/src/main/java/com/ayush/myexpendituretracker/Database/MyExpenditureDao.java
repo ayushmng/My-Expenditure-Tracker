@@ -18,5 +18,4 @@ public interface MyExpenditureDao {
 
     @Query("delete from MyExpenditureDetails")
     void deleteAllData();
-
 }
