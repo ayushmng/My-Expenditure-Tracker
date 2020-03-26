@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
-                android:text="Hello, Mr.X"
+                android:text="Hello, XXX"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

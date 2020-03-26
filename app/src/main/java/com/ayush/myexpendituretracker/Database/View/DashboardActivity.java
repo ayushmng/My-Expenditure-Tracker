@@ -340,7 +340,16 @@ public class DashboardActivity extends AppCompatActivity {
     private void LogoutAlertDialog() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this, R.style.AlertDialogTheme);
-        builder.setTitle("Logout");
+        String titleText = "Logout";
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark));
+        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+        ssBuilder.setSpan(
+                foregroundColorSpan,
+                0,
+                titleText.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        builder.setTitle(ssBuilder);
         builder.setCancelable(true);
         builder.setMessage(R.string.logoutMessage);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
