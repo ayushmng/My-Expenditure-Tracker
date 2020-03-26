@@ -1,13 +1,9 @@
-package com.ayush.myexpendituretracker.Database;
+package com.ayush.myexpendituretracker.DAO;
 
 import androidx.room.ColumnInfo;
-import androidx.room.PrimaryKey;
 
-@androidx.room.Entity(tableName = "MyExpenditureDetails")
+public class LastMonthExpenditure {
 
-public class MyExpenditureModel {
-
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "Id")
     private int id;
 
@@ -23,7 +19,6 @@ public class MyExpenditureModel {
     @ColumnInfo(name = "Expenditure")
     private String Expenditure;
 
-    // Creating Setter and Getter is important
     public int getId() {
         return id;
     }

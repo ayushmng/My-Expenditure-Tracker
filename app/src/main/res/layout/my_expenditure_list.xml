@@ -24,38 +24,69 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/current_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:padding="4dp"
-                android:text="02/02/2020"
+                android:text="02/01/2020"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/pre_exp"
+                android:id="@+id/last_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:padding="4dp"
-                android:text="Last Month "
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/date"
-                app:layout_constraintTop_toBottomOf="@+id/date" />
+                android:text="02/02/2020"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/current_date" />
 
             <TextView
-                android:id="@+id/current_exp"
+                android:id="@+id/current_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Current Month"
-                app:layout_constraintBottom_toBottomOf="@+id/pre_exp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date" />
+                android:text="Rs. 100"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/current_date"
+                app:layout_constraintTop_toBottomOf="@+id/current_date" />
+
+            <TextView
+                android:id="@+id/last_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Rs. 200"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/last_date"
+                app:layout_constraintTop_toBottomOf="@+id/last_date" />
+
+            <TextView
+                android:id="@+id/current_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:padding="4dp"
+                android:text="Shopping"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/current_date"
+                app:layout_constraintTop_toBottomOf="@+id/current_amount" />
+
+            <TextView
+                android:id="@+id/last_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Fooding"
+                app:layout_constraintBottom_toBottomOf="@+id/current_title"
+                app:layout_constraintEnd_toEndOf="@+id/last_amount"
+                app:layout_constraintTop_toBottomOf="@+id/last_amount"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

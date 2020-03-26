@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -25,6 +25,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
+import com.ayush.myexpendituretracker.DAO.TotalExpenditure;
 import com.ayush.myexpendituretracker.Database.MyExpenditureModel;
 import com.ayush.myexpendituretracker.Database.MyExpenditureViewModel;
 import com.ayush.myexpendituretracker.LoginActivity;
@@ -33,31 +35,43 @@ import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private MyExpenditureViewModel myExpenditureViewModel;
+    private LastMonthExpenditure lastMonthExpenditure;
+    private MyExpenditureModel expenditureModel;
     private MySharedPreferences mySharedPreferences;
     private DashboardAdapter adapter;
     private RecyclerView recyclerView;
-    private ArrayList<MyExpenditureModel> arrayList;
+
+    private List<LastMonthExpenditure> lastMonthExpenditureList;
+
+    int val = 0;
 
     private ImageButton edit;
-    private TextView salutation, monthlyIncome, expectedSaving;
-    private String MI, ES;
+    private TextView salutation, monthlyIncome, expectedSaving, totalExpenditure, topExpenditure;
+    private String MI, ES, todayDate, thisMonth;
 
     private long mBackPressed;
     private static final int TIME_INTERVAL = 3000; // milliseconds, desired time passed between two back presses.
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         findviews();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        todayDate = formatter.format(date);
+
+        Calendar cal = Calendar.getInstance();
+        thisMonth = new SimpleDateFormat("MMMM").format(cal.getTime());
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,32 +80,72 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardActivity.this);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        adapter = new DashboardAdapter(DashboardActivity.this, arrayList);
-        recyclerView.setAdapter(adapter);
-
-     /*   myExpenditureViewModel = ViewModelProviders.of(this).get(MyExpenditureViewModel.class);
-        myExpenditureViewModel.getGetAllData().observe(this, new Observer<List<MyExpenditureModel>>() {
+        myExpenditureViewModel = ViewModelProviders.of(this).get(MyExpenditureViewModel.class);
+        /*myExpenditureViewModel.getGetAllData().observe(this, new Observer<List<MyExpenditureModel>>() {
             @Override
             public void onChanged(@Nullable List<MyExpenditureModel> data) {
                 try {
-                    *//*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardActivity.this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardActivity.this);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(linearLayoutManager);
 
-                    adapter = new DashboardAdapter(DashboardActivity.this, arrayList);
-                    recyclerView.setAdapter(adapter);*//*
-//                    email.setText((Objects.requireNonNull(data).get(0).getEmail()));
-//                    password.setText((Objects.requireNonNull(data.get(0).getPassword())));
+                    adapter = new DashboardAdapter(DashboardActivity.this, data);
+                    recyclerView.setAdapter(adapter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });*/
+
+
+        myExpenditureViewModel.getCurrentMonthDetails(thisMonth).observe(this, new Observer<List<MyExpenditureModel>>() {
+            @Override
+            public void onChanged(List<MyExpenditureModel> models) {
+
+                if (models.size() > 0) {
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardActivity.this);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+
+                    adapter = new DashboardAdapter(DashboardActivity.this, models, lastMonthExpenditureList);
+                    recyclerView.setAdapter(adapter);
+
+//                List<LastMonthExpenditure> lastMonthExpenditures = (List<LastMonthExpenditure>) myExpenditureViewModel.getLastMonthDetails(thisMonth);
+//                Log.i("show_data", lastMonthExpenditures.get(0).getDate());
+                }
+            }
+        });
+
+        myExpenditureViewModel.getLastMonthDetails("February").observe(this, new Observer<List<LastMonthExpenditure>>() {
+            @Override
+            public void onChanged(List<LastMonthExpenditure> models) {
+
+                if (models.size() > 1) {
+                    lastMonthExpenditureList = models;
+                }
+            }
+        });
+
+        myExpenditureViewModel.getTotalExpenditure(thisMonth).observe(this, new Observer<List<TotalExpenditure>>() {
+            @Override
+            public void onChanged(List<TotalExpenditure> models) {
+                if (models.size() > 0) {
+                    totalExpenditure.setText(models.get(0).getTotalExpenditure());
+                }
+            }
+        });
+
+        myExpenditureViewModel.getTopExp(thisMonth).observe(this, new Observer<List<MyExpenditureModel>>() {
+            @Override
+            public void onChanged(List<MyExpenditureModel> models) {
+                if (models.size() > 0) {
+                    String topExp = models.get(0).getExpenditure();
+                    if (!topExp.isEmpty() || !topExp.equals("")) {
+                        topExpenditure.setText(topExp);
+                    }
+                }
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +162,10 @@ public class DashboardActivity extends AppCompatActivity {
         monthlyIncome = findViewById(R.id.monthly_income);
         expectedSaving = findViewById(R.id.expected_saving);
         recyclerView = findViewById(R.id.recyclerView);
+        totalExpenditure = findViewById(R.id.total_exp);
+        topExpenditure = findViewById(R.id.top_exp);
+
         mySharedPreferences = new MySharedPreferences(this);
-        arrayList = new ArrayList<>();
 
         MI = mySharedPreferences.getMonthlyincome();
         ES = mySharedPreferences.getSaving();
@@ -224,21 +280,72 @@ public class DashboardActivity extends AppCompatActivity {
                 String ttl = title.getText().toString();
                 String te = today_exp.getText().toString();
 
-                MyExpenditureModel expenditureModel = new MyExpenditureModel();
+                expenditureModel = new MyExpenditureModel();
 
                 if (ttl.equals("") || ttl.isEmpty() && te.equals("") || te.isEmpty()) {
                     title.setError("Title required");
                     today_exp.setError("Amount required");
                     Toast.makeText(DashboardActivity.this, "Please provide title and amount", Toast.LENGTH_SHORT).show();
                 } else {
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = new Date();
-                    String todayDate = formatter.format(date);
+
+                    /*expenditureModel.setTitle("Last_" + ttl);
+                    expenditureModel.setExpenditure(te);
+                    expenditureModel.setDate("02/02/2020");
+                    expenditureModel.setMonth("February");
+                    myExpenditureViewModel.insert(expenditureModel);
+
                     expenditureModel.setTitle(ttl);
                     expenditureModel.setExpenditure(te);
                     expenditureModel.setDate(todayDate);
-                    myExpenditureViewModel.insert(expenditureModel);
-                    Toast.makeText(DashboardActivity.this, "You set amount " + te + " as " + ttl + " for today expenditure", Toast.LENGTH_LONG).show();
+                    expenditureModel.setMonth(thisMonth);
+                    myExpenditureViewModel.insert(expenditureModel);*/
+
+                   /* for (int times = 0; times < 1; times++) {
+                        if (val == 1) {
+                            expenditureModel.setTitle("Last_" + ttl);
+                            expenditureModel.setExpenditure(te);
+                            expenditureModel.setDate("02/02/2020");
+                            expenditureModel.setMonth("February");
+                            myExpenditureViewModel.insert(expenditureModel);
+                            val = 2;
+                        }
+
+                        expenditureModel.setTitle(ttl);
+                        expenditureModel.setExpenditure(te);
+                        expenditureModel.setDate(todayDate);
+                        expenditureModel.setMonth(thisMonth);
+                        myExpenditureViewModel.insert(expenditureModel);
+                        val = 1;
+                    }*/
+
+                    for (int times = 0; times <= 1; times++) {
+                        if (times == 0) {
+                            /*ttl = "Last_" + ttl;
+                            todayDate = "02/02/2020";
+                            thisMonth = "February";*/
+
+                            expenditureModel.setTitle("Last_" + ttl);
+                            expenditureModel.setExpenditure(te);
+                            expenditureModel.setDate("02/02/2020");
+                            expenditureModel.setMonth("February");
+                            myExpenditureViewModel.insert(expenditureModel);
+
+                        } else if (times == 1) {
+                            expenditureModel.setTitle(ttl);
+                            expenditureModel.setExpenditure(te);
+                            expenditureModel.setDate(todayDate);
+                            expenditureModel.setMonth(thisMonth);
+                            myExpenditureViewModel.insert(expenditureModel);
+                        }
+                    }
+
+                    /*lastMonthExpenditure.setTitle("Last_"+ttl);
+                    lastMonthExpenditure.setExpenditure(te);
+                    lastMonthExpenditure.setDate("02/03/2020");
+                    lastMonthExpenditure.setMonth("February");
+                    myExpenditureViewModel.insertLastMonthData(lastMonthExpenditure);*/
+
+//                    Toast.makeText(DashboardActivity.this, "You set amount " + te + " as " + ttl + " for today expenditure", Toast.LENGTH_LONG).show();
                 }
             }
         });

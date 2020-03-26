@@ -25,13 +25,14 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
 
-                int status = mySharedPreferences.getStatus();
+                /*int status = mySharedPreferences.getStatus();
                 if (status == 1) {
                     startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
                 } else {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                }
+                }*/
             }
         }, SPLASH_TIME_OUT);
     }

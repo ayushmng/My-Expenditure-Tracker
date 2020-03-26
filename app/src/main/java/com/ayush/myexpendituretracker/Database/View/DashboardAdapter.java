@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
 import com.ayush.myexpendituretracker.Database.MyExpenditureModel;
 import com.ayush.myexpendituretracker.R;
 
@@ -20,11 +22,13 @@ import java.util.List;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<MyExpenditureModel> list;
+    List<MyExpenditureModel> list;
+    List<LastMonthExpenditure> lastMonthExpenditureList;
 
-    public DashboardAdapter(Context context, ArrayList<MyExpenditureModel> model){
+    public DashboardAdapter(Context context, List<MyExpenditureModel> model, List<LastMonthExpenditure> lastMonthExpenditures){
         this.context = context;
         this.list = model;
+        this.lastMonthExpenditureList = lastMonthExpenditures;
     }
 
     @NonNull
@@ -37,9 +41,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.date.setText(list.get(position).getDate());
-        holder.current_exp.setText(list.get(position).getTitle());
-        holder.last_exp.setText(list.get(position).getExpenditure());
+        /*holder.current_date.setText(list.get(position).getDate());
+        holder.current_title.setText(list.get(position).getTitle());
+        holder.current_amount.setText(list.get(position).getExpenditure());
+
+        holder.last_date.setText(lastMonthExpenditureList.get(position).getDate());
+        holder.last_title.setText(lastMonthExpenditureList.get(position).getTitle());
+        holder.last_amount.setText(lastMonthExpenditureList.get(position).getExpenditure());*/
     }
 
     @Override
@@ -49,14 +57,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView date, current_exp, last_exp;
+        TextView current_date, last_date, current_title, last_title, current_amount, last_amount;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            date = itemView.findViewById(R.id.date);
-            current_exp = itemView.findViewById(R.id.current_exp);
-            last_exp = itemView.findViewById(R.id.pre_exp);
+            current_date = itemView.findViewById(R.id.current_date);
+            current_title = itemView.findViewById(R.id.current_title);
+            current_amount = itemView.findViewById(R.id.current_amount);
+            last_date = itemView.findViewById(R.id.last_date);
+            last_title = itemView.findViewById(R.id.last_title);
+            last_amount = itemView.findViewById(R.id.last_amount);
         }
     }
 }
