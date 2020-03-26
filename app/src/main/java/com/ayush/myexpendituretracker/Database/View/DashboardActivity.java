@@ -48,7 +48,6 @@ import java.util.List;
 public class DashboardActivity extends AppCompatActivity {
 
     private MyExpenditureViewModel myExpenditureViewModel;
-    private LastMonthExpenditure lastMonthExpenditure;
     private MyExpenditureModel expenditureModel, expenditureModel2;
     private MySharedPreferences mySharedPreferences;
     private DashboardAdapter adapter;

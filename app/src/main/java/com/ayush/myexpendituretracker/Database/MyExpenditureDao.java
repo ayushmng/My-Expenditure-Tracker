@@ -1,7 +1,5 @@
 package com.ayush.myexpendituretracker.Database;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -18,16 +16,11 @@ public interface MyExpenditureDao {
     @Insert
     void insertDetails(MyExpenditureModel data);
 
-    /*@Query("select * from MyExpenditureDetails")
-    LiveData<List<MyExpenditureModel>> getDetails();*/
-
     @Query("SELECT * FROM MyExpenditureDetails WHERE month =:month")
     LiveData<List<MyExpenditureModel>> getCurrentMonthDetails(String month);
 
     @Query("SELECT * FROM MyExpenditureDetails WHERE month =:month")
     LiveData<List<LastMonthExpenditure>> getLastMonthDetails(String month);
-
-//    @Query("SELECT sum(Expenditure) as Expenditure FROM MyExpenditureDetails WHERE month = '25/03/2020' ") //25/03/2020
 
     @Query("SELECT sum(Expenditure) as Expenditure FROM MyExpenditureDetails WHERE month =:month") //25/03/2020
     LiveData<List<TotalExpenditure>> getTotalExpenditure(String month);

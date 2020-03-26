@@ -14,19 +14,10 @@ import java.util.List;
 public class MyExpenditureViewModel extends AndroidViewModel {
 
     private MyExpenditureRepository repository;
-    private LiveData<List<MyExpenditureModel>> getAllData;
-    private LiveData<List<MyExpenditureModel>> getTopExp;
-    private LiveData<List<MyExpenditureModel>> getCurrentMonthDetails;
-    private LiveData<List<MyExpenditureModel>> getLastMonthDetails;
-    private LiveData<List<TotalExpenditure>> getTotalExpenditure;
 
     public MyExpenditureViewModel(@NonNull Application application) {
         super(application);
         repository = new MyExpenditureRepository(application);
-//        getAllData = repository.getAllData();
-//        getTopExp = repository.getTopExp();
-//        getCurrentMonthDetails = repository.getGetCurrentMonthDetails();
-//        getLastMonthDetails = repository.getGetLastMonthDetails();
     }
 
     public void insert(MyExpenditureModel data) {
@@ -36,14 +27,6 @@ public class MyExpenditureViewModel extends AndroidViewModel {
     public void delete(){
         repository.deleteTask();
     }
-
-    public void insertLastMonthData(LastMonthExpenditure lastMonthExpenditure){
-        repository.insertLastMonthData(lastMonthExpenditure);
-    }
-
-//    public LiveData<List<MyExpenditureModel>> getGetAllData() {
-//        return getAllData;
-//    }
 
     public LiveData<List<MyExpenditureModel>> getCurrentMonthDetails(String month) {
         return repository.getCurrentMonthDetails(month);
