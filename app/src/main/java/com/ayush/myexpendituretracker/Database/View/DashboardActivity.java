@@ -1,12 +1,18 @@
 package com.ayush.myexpendituretracker.Database.View;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,18 +49,16 @@ public class DashboardActivity extends AppCompatActivity {
 
     private MyExpenditureViewModel myExpenditureViewModel;
     private LastMonthExpenditure lastMonthExpenditure;
-    private MyExpenditureModel expenditureModel;
+    private MyExpenditureModel expenditureModel, expenditureModel2;
     private MySharedPreferences mySharedPreferences;
     private DashboardAdapter adapter;
     private RecyclerView recyclerView;
 
-    private List<LastMonthExpenditure> lastMonthExpenditureList;
-
-    int val = 0;
+    public List<LastMonthExpenditure> lastMonthExpenditureList;
 
     private ImageButton edit;
     private TextView salutation, monthlyIncome, expectedSaving, totalExpenditure, topExpenditure;
-    private String MI, ES, todayDate, thisMonth;
+    private String MI, ES, TE, todayDate, thisMonth;
 
     private long mBackPressed;
     private static final int TIME_INTERVAL = 3000; // milliseconds, desired time passed between two back presses.
@@ -64,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        findviews();
+        findViews();
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
@@ -76,27 +80,33 @@ public class DashboardActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setValuesforExpenditureAndSaving();
+                setValuesForExpenditureAndSaving();
             }
         });
 
-        myExpenditureViewModel = ViewModelProviders.of(this).get(MyExpenditureViewModel.class);
-        /*myExpenditureViewModel.getGetAllData().observe(this, new Observer<List<MyExpenditureModel>>() {
-            @Override
-            public void onChanged(@Nullable List<MyExpenditureModel> data) {
-                try {
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardActivity.this);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(linearLayoutManager);
+        loadAllViewModels();
 
-                    adapter = new DashboardAdapter(DashboardActivity.this, data);
-                    recyclerView.setAdapter(adapter);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setValuesForTodayExpenditure();
+            }
+        });
+    }
+
+    private void loadAllViewModels() {
+        myExpenditureViewModel = ViewModelProviders.of(this).get(MyExpenditureViewModel.class);
+        myExpenditureViewModel.getLastMonthDetails("February").observe(this, new Observer<List<LastMonthExpenditure>>() {
+            @Override
+            public void onChanged(List<LastMonthExpenditure> models) {
+                if (models.size() > 0) {
+                    Log.i("show_data", models.get(0).getDate() + " " + models.get(0).getTitle());
+                    lastMonthExpenditureList = models;
+                    lastMonthExpenditureList.addAll(models);
                 }
             }
-        });*/
-
+        });
 
         myExpenditureViewModel.getCurrentMonthDetails(thisMonth).observe(this, new Observer<List<MyExpenditureModel>>() {
             @Override
@@ -109,19 +119,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                     adapter = new DashboardAdapter(DashboardActivity.this, models, lastMonthExpenditureList);
                     recyclerView.setAdapter(adapter);
-
-//                List<LastMonthExpenditure> lastMonthExpenditures = (List<LastMonthExpenditure>) myExpenditureViewModel.getLastMonthDetails(thisMonth);
-//                Log.i("show_data", lastMonthExpenditures.get(0).getDate());
-                }
-            }
-        });
-
-        myExpenditureViewModel.getLastMonthDetails("February").observe(this, new Observer<List<LastMonthExpenditure>>() {
-            @Override
-            public void onChanged(List<LastMonthExpenditure> models) {
-
-                if (models.size() > 1) {
-                    lastMonthExpenditureList = models;
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -130,6 +128,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<TotalExpenditure> models) {
                 if (models.size() > 0) {
+                    mySharedPreferences.setTotalExpenditure(models.get(0).getTotalExpenditure());
                     totalExpenditure.setText(models.get(0).getTotalExpenditure());
                 }
             }
@@ -147,16 +146,36 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setValuesforTodayExpenditure();
+        TE = mySharedPreferences.getTotalExpenditure();
+        if (!ES.isEmpty() && !TE.isEmpty()) {
+            if (Integer.parseInt(ES) < Integer.parseInt(TE)) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                String titleText = "Alert !!";
+                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.colorRed));
+                SpannableStringBuilder ssBuilder = new SpannableStringBuilder(titleText);
+                ssBuilder.setSpan(
+                        foregroundColorSpan,
+                        0,
+                        titleText.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+
+                builder.setTitle(ssBuilder);
+                builder.setCancelable(false);
+                builder.setMessage("Your Expenditure crosses your saving, Please limit your expenditure.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        builder.setCancelable(true);
+                    }
+                });
+                builder.show();
             }
-        });
+        }
+
     }
 
-    private void findviews() {
+    private void findViews() {
         salutation = findViewById(R.id.salutation);
         edit = findViewById(R.id.edit_button);
         monthlyIncome = findViewById(R.id.monthly_income);
@@ -167,7 +186,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         mySharedPreferences = new MySharedPreferences(this);
 
-        MI = mySharedPreferences.getMonthlyincome();
+        MI = mySharedPreferences.getMonthlyIncome();
         ES = mySharedPreferences.getSaving();
 
         if (!mySharedPreferences.getUsername().isEmpty()) {
@@ -184,9 +203,9 @@ public class DashboardActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.dashboard, menu);
-        Drawable yourdrawable = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
-        yourdrawable.mutate();
-        yourdrawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN); // change color of menu icon
+        Drawable drawable = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
+        drawable.mutate();
+        drawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN); // change color of menu icon
         return true;
     }
 
@@ -202,7 +221,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void setValuesforExpenditureAndSaving() {
+    private void setValuesForExpenditureAndSaving() {
 
         final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -215,7 +234,7 @@ public class DashboardActivity extends AppCompatActivity {
         mBuilder.setView(view);
         mBuilder.setTitle("My Expenditure Tracker");
 
-        MI = mySharedPreferences.getMonthlyincome();
+        MI = mySharedPreferences.getMonthlyIncome();
         ES = mySharedPreferences.getSaving();
 
         if (!MI.isEmpty() && !ES.isEmpty()) {
@@ -238,7 +257,7 @@ public class DashboardActivity extends AppCompatActivity {
                     if (Integer.parseInt(es) > Integer.parseInt(mi)) {
                         Toast.makeText(DashboardActivity.this, "Sorry, your Monthly Income can't be greater than Saving", Toast.LENGTH_SHORT).show();
                     } else {
-                        mySharedPreferences.setMonthlyincome(mi);
+                        mySharedPreferences.setMonthlyIncome(mi);
                         mySharedPreferences.setSaving(es);
                         Toast.makeText(DashboardActivity.this, "Amount " + mi + " as monthly income and " + es + " as expected saving has been added to your account", Toast.LENGTH_LONG).show();
 
@@ -260,7 +279,7 @@ public class DashboardActivity extends AppCompatActivity {
         mBuilder.create().show();  // Displays the dialogue box
     }
 
-    private void setValuesforTodayExpenditure() {
+    private void setValuesForTodayExpenditure() {
 
         final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -281,6 +300,7 @@ public class DashboardActivity extends AppCompatActivity {
                 String te = today_exp.getText().toString();
 
                 expenditureModel = new MyExpenditureModel();
+                expenditureModel2 = new MyExpenditureModel();
 
                 if (ttl.equals("") || ttl.isEmpty() && te.equals("") || te.isEmpty()) {
                     title.setError("Title required");
@@ -288,64 +308,21 @@ public class DashboardActivity extends AppCompatActivity {
                     Toast.makeText(DashboardActivity.this, "Please provide title and amount", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    /*expenditureModel.setTitle("Last_" + ttl);
-                    expenditureModel.setExpenditure(te);
-                    expenditureModel.setDate("02/02/2020");
-                    expenditureModel.setMonth("February");
-                    myExpenditureViewModel.insert(expenditureModel);
-
                     expenditureModel.setTitle(ttl);
                     expenditureModel.setExpenditure(te);
                     expenditureModel.setDate(todayDate);
                     expenditureModel.setMonth(thisMonth);
-                    myExpenditureViewModel.insert(expenditureModel);*/
+                    myExpenditureViewModel.insert(expenditureModel);
 
-                   /* for (int times = 0; times < 1; times++) {
-                        if (val == 1) {
-                            expenditureModel.setTitle("Last_" + ttl);
-                            expenditureModel.setExpenditure(te);
-                            expenditureModel.setDate("02/02/2020");
-                            expenditureModel.setMonth("February");
-                            myExpenditureViewModel.insert(expenditureModel);
-                            val = 2;
-                        }
+                    expenditureModel2.setTitle("Last_" + ttl);
+                    expenditureModel2.setExpenditure(te);
+                    expenditureModel2.setDate("01/02/2020");
+                    expenditureModel2.setMonth("February");
+                    myExpenditureViewModel.insert(expenditureModel2);
 
-                        expenditureModel.setTitle(ttl);
-                        expenditureModel.setExpenditure(te);
-                        expenditureModel.setDate(todayDate);
-                        expenditureModel.setMonth(thisMonth);
-                        myExpenditureViewModel.insert(expenditureModel);
-                        val = 1;
-                    }*/
+                    Toast.makeText(DashboardActivity.this, "You set amount " + te + " as " + ttl + " for today expenditure", Toast.LENGTH_LONG).show();
 
-                    for (int times = 0; times <= 1; times++) {
-                        if (times == 0) {
-                            /*ttl = "Last_" + ttl;
-                            todayDate = "02/02/2020";
-                            thisMonth = "February";*/
-
-                            expenditureModel.setTitle("Last_" + ttl);
-                            expenditureModel.setExpenditure(te);
-                            expenditureModel.setDate("02/02/2020");
-                            expenditureModel.setMonth("February");
-                            myExpenditureViewModel.insert(expenditureModel);
-
-                        } else if (times == 1) {
-                            expenditureModel.setTitle(ttl);
-                            expenditureModel.setExpenditure(te);
-                            expenditureModel.setDate(todayDate);
-                            expenditureModel.setMonth(thisMonth);
-                            myExpenditureViewModel.insert(expenditureModel);
-                        }
-                    }
-
-                    /*lastMonthExpenditure.setTitle("Last_"+ttl);
-                    lastMonthExpenditure.setExpenditure(te);
-                    lastMonthExpenditure.setDate("02/03/2020");
-                    lastMonthExpenditure.setMonth("February");
-                    myExpenditureViewModel.insertLastMonthData(lastMonthExpenditure);*/
-
-//                    Toast.makeText(DashboardActivity.this, "You set amount " + te + " as " + ttl + " for today expenditure", Toast.LENGTH_LONG).show();
+                    loadAllViewModels();
                 }
             }
         });
@@ -363,19 +340,26 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void LogoutAlertDialog() {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this, R.style.AlertDialogTheme);
         builder.setTitle("Logout");
-        builder.setCancelable(false);
-        builder.setMessage("Are you sure ? Logging out will clear all your data");
+        builder.setCancelable(true);
+        builder.setMessage(R.string.logoutMessage);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mySharedPreferences.removealldata();
-                ;
                 Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
                 Toast.makeText(getApplicationContext(), "Logged Out !!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        builder.setNeutralButton("Clear all record", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                myExpenditureViewModel.delete();
+                startActivity(new Intent(DashboardActivity.this, DashboardActivity.class));
             }
         });
 
@@ -385,16 +369,14 @@ public class DashboardActivity extends AppCompatActivity {
                 builder.setCancelable(true);
             }
         });
+
         builder.show();
     }
 
     @Override
     public void onBackPressed() {
         if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);  // To exit the whole application
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            finishAffinity();
         } else {
             Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT).show();
         }

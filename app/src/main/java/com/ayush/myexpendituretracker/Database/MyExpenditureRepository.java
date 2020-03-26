@@ -13,7 +13,7 @@ import java.util.List;
 public class MyExpenditureRepository {
 
     private MyExpenditureDao myExpenditureDao;
-//    private LiveData<List<MyExpenditureModel>> allData;
+    //    private LiveData<List<MyExpenditureModel>> allData;
     private LiveData<List<MyExpenditureModel>> getTopExp;
     private LiveData<List<MyExpenditureModel>> getCurrentMonthDetails;
     private LiveData<List<MyExpenditureModel>> getLastMonthDetails;
@@ -51,9 +51,9 @@ public class MyExpenditureRepository {
         new DataInsertion(myExpenditureDao).execute(data);
     }
 
-    /*public void insertLastMonthData(LastMonthExpenditure lastMonthExpenditure){
+    public void insertLastMonthData(LastMonthExpenditure lastMonthExpenditure) {
         new DataInsertion(lastMonthExpenditure);
-    }*/
+    }
 
     private static class DataInsertion extends AsyncTask<MyExpenditureModel, Void, Void> {
         private MyExpenditureDao myExpenditureDao;
@@ -63,15 +63,25 @@ public class MyExpenditureRepository {
             this.myExpenditureDao = myexpendituredao;
         }
 
-       /* private DataInsertion(LastMonthExpenditure lastMonthExpenditure){
+        private DataInsertion(LastMonthExpenditure lastMonthExpenditure) {
             this.lastMonthExpenditure = lastMonthExpenditure;
-        }*/
+        }
 
         @Override
         protected Void doInBackground(MyExpenditureModel... data) {
-//            myExpenditureDao.deleteAllData();
             myExpenditureDao.insertDetails(data[0]);
+
             return null;
         }
+    }
+
+    void deleteTask() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                myExpenditureDao.deleteAllData();
+                return null;
+            }
+        }.execute();
     }
 }

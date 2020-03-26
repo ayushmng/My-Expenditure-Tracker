@@ -1,22 +1,19 @@
 package com.ayush.myexpendituretracker.Database.View;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
 import com.ayush.myexpendituretracker.Database.MyExpenditureModel;
 import com.ayush.myexpendituretracker.R;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyViewHolder> {
@@ -25,7 +22,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     List<MyExpenditureModel> list;
     List<LastMonthExpenditure> lastMonthExpenditureList;
 
-    public DashboardAdapter(Context context, List<MyExpenditureModel> model, List<LastMonthExpenditure> lastMonthExpenditures){
+    public DashboardAdapter(Context context, List<MyExpenditureModel> model, List<LastMonthExpenditure> lastMonthExpenditures) {
         this.context = context;
         this.list = model;
         this.lastMonthExpenditureList = lastMonthExpenditures;
@@ -41,13 +38,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        /*holder.current_date.setText(list.get(position).getDate());
+        holder.current_date.setText(list.get(position).getDate());
         holder.current_title.setText(list.get(position).getTitle());
-        holder.current_amount.setText(list.get(position).getExpenditure());
+        holder.current_amount.setText("Rs. "+list.get(position).getExpenditure());
 
         holder.last_date.setText(lastMonthExpenditureList.get(position).getDate());
         holder.last_title.setText(lastMonthExpenditureList.get(position).getTitle());
-        holder.last_amount.setText(lastMonthExpenditureList.get(position).getExpenditure());*/
+        holder.last_amount.setText("Rs. "+lastMonthExpenditureList.get(position).getExpenditure());
     }
 
     @Override

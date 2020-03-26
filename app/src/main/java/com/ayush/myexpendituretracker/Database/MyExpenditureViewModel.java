@@ -33,9 +33,13 @@ public class MyExpenditureViewModel extends AndroidViewModel {
         repository.insertData(data);
     }
 
-   /* public void insertLastMonthData(LastMonthExpenditure lastMonthExpenditure){
+    public void delete(){
+        repository.deleteTask();
+    }
+
+    public void insertLastMonthData(LastMonthExpenditure lastMonthExpenditure){
         repository.insertLastMonthData(lastMonthExpenditure);
-    }*/
+    }
 
 //    public LiveData<List<MyExpenditureModel>> getGetAllData() {
 //        return getAllData;

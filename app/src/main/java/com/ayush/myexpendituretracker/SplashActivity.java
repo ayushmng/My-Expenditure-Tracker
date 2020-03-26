@@ -11,7 +11,6 @@ import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private int SPLASH_TIME_OUT = 1500;
     MySharedPreferences mySharedPreferences;
 
     @Override
@@ -24,9 +23,9 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-//                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
 
+                // To get direct access to dashboard
                 /*int status = mySharedPreferences.getStatus();
                 if (status == 1) {
                     startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
@@ -34,6 +33,6 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }*/
             }
-        }, SPLASH_TIME_OUT);
+        }, 1500);
     }
 }

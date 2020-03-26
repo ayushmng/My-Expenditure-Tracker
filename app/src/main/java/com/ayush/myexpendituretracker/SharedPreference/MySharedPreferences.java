@@ -3,8 +3,6 @@ package com.ayush.myexpendituretracker.SharedPreference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.view.View;
 
 public class MySharedPreferences {
     Context context;
@@ -15,10 +13,11 @@ public class MySharedPreferences {
     private static final String USERNAME = "user_name";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
-    private static final String MONTHLYINCOME = "montly_income";
+    private static final String MONTHLY_INCOME = "monthly_income";
     private static final String SAVING = "saving";
+    private static final String TOTAL_EXPENDITURE = "total_expenditure";
 
-    public MySharedPreferences(Context context){
+    public MySharedPreferences(Context context) {
         this.context = context;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 //        sharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
@@ -56,12 +55,12 @@ public class MySharedPreferences {
         return sharedPreferences.getString(PASSWORD, "");
     }
 
-    public void setMonthlyincome(String monthlyincome) {
-        sharedPreferences.edit().putString(MONTHLYINCOME, monthlyincome).apply();
+    public void setMonthlyIncome(String monthlyIncome) {
+        sharedPreferences.edit().putString(MONTHLY_INCOME, monthlyIncome).apply();
     }
 
-    public String getMonthlyincome() {
-        return sharedPreferences.getString(MONTHLYINCOME, "");
+    public String getMonthlyIncome() {
+        return sharedPreferences.getString(MONTHLY_INCOME, "");
     }
 
     public void setSaving(String saving) {
@@ -72,21 +71,16 @@ public class MySharedPreferences {
         return sharedPreferences.getString(SAVING, "");
     }
 
-    public void removealldata(){
+    public void setTotalExpenditure(String totalExpenditure) {
+        sharedPreferences.edit().putString(TOTAL_EXPENDITURE, totalExpenditure).apply();
+    }
+
+    public String getTotalExpenditure() {
+        return sharedPreferences.getString(TOTAL_EXPENDITURE, "");
+    }
+
+    public void removealldata() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear().apply(); // to remove preference values
     }
-
-    /*public MySharedPreferences(Context context, int status, String username, String email, String password){
-        this.context = context;
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(context.getString(R.string.key), status);
-        editor.putString(USERNAME, username);
-        editor.putString(EMAIL, email);
-        editor.putString(PASSWORD, password);
-        editor.apply();
-    }*/
 }

@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:padding="4dp"
-                android:text="02/01/2020"
+                android:text="00/00/0000"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:padding="4dp"
-                android:text="02/02/2020"
+                android:text="00/00/0000"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/current_date" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Rs. 100"
+                android:text="Rs. 0"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/current_date"
                 app:layout_constraintTop_toBottomOf="@+id/current_date" />
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Rs. 200"
+                android:text="Rs. 0"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/last_date"
                 app:layout_constraintTop_toBottomOf="@+id/last_date" />
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:padding="4dp"
-                android:text="Shopping"
+                android:text="Dummy"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/current_date"
                 app:layout_constraintTop_toBottomOf="@+id/current_amount" />
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Fooding"
+                android:text="Dummy"
                 app:layout_constraintBottom_toBottomOf="@+id/current_title"
                 app:layout_constraintEnd_toEndOf="@+id/last_amount"
                 app:layout_constraintTop_toBottomOf="@+id/last_amount"

@@ -23,15 +23,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:padding="4dp"
+                android:text="Login"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/app_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -50,6 +63,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -58,6 +72,7 @@
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
                         android:hint="@string/username"
                         android:maxLines="1"
                         android:singleLine="true"/>
@@ -116,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="64dp"
                     android:layout_marginEnd="62dp"
-                    android:text="@string/bottom_text"
+                    android:text="Haven't registered yet?"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.478"
                     app:layout_constraintStart_toStartOf="@+id/til_password"
@@ -128,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
                     android:padding="5dp"
-                    android:text="Login"
+                    android:text="Register"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -144,7 +159,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/button_selector"
-                    android:text="@string/sign_up"
+                    android:text="@string/login"
                     android:textColor="#fff"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/til_password"

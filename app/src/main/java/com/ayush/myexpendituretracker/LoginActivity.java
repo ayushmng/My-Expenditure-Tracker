@@ -19,8 +19,8 @@ public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText username, email, password;
     TextInputLayout til_uname, til_email, til_pass;
-    TextView logintext, textView;
-    String Username, Email, Password;
+    TextView title, logintext, textView;
+    String Email, Password;
     Button signup;
 
     MySharedPreferences mySharedPreferences;
@@ -29,22 +29,23 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("Register");
+        getSupportActionBar().hide();
         findviews();
+        title.setText("Login");
 
         mySharedPreferences = new MySharedPreferences(LoginActivity.this);
         logintext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (logintext.getText().equals("Login")) {
-                    setTitle("Login");
+                    title.setText("Login");
                     textView.setText("Haven't registered yet?");
                     logintext.setText("Register");
                     til_uname.setVisibility(View.GONE);
                     signup.setText("Login");
 
                 } else if (logintext.getText().equals("Register")) {
-                    setTitle("Register");
+                    title.setText("Register");
                     textView.setText(R.string.bottom_text);
                     logintext.setText("Login");
                     til_uname.setVisibility(View.VISIBLE);
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(LoginActivity.this, "Email or Password did not match", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (NullPointerException e){
+                        } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
 
@@ -90,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void findviews() {
 
+        title = findViewById(R.id.title);
         logintext = findViewById(R.id.login_textView);
         textView = findViewById(R.id.textView);
         signup = findViewById(R.id.login);
@@ -170,9 +172,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(Intent.ACTION_MAIN);  // To exit the whole application
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        finishAffinity();
     }
 }
