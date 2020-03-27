@@ -25,17 +25,17 @@
 
     <style name="NeutralButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorRed</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
 </resources>

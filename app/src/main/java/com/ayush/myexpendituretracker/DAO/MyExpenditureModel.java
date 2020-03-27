@@ -1,4 +1,4 @@
-package com.ayush.myexpendituretracker.Database;
+package com.ayush.myexpendituretracker.DAO;
 
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;

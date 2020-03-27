@@ -1,4 +1,4 @@
-package com.ayush.myexpendituretracker.Database;
+package com.ayush.myexpendituretracker.Repository;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
+import com.ayush.myexpendituretracker.DAO.MyExpenditureModel;
 import com.ayush.myexpendituretracker.DAO.TotalExpenditure;
 
 import java.util.List;

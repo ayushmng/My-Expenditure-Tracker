@@ -1,7 +1,6 @@
-package com.ayush.myexpendituretracker.Database.View;
+package com.ayush.myexpendituretracker.View;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
-import com.ayush.myexpendituretracker.Database.MyExpenditureModel;
+import com.ayush.myexpendituretracker.DAO.MyExpenditureModel;
 import com.ayush.myexpendituretracker.R;
 
 import java.util.List;
@@ -40,11 +39,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
 
         holder.current_date.setText(list.get(position).getDate());
         holder.current_title.setText(list.get(position).getTitle());
-        holder.current_amount.setText("Rs. "+list.get(position).getExpenditure());
+        holder.current_amount.setText("Rs. " + list.get(position).getExpenditure());
 
-        holder.last_date.setText(lastMonthExpenditureList.get(position).getDate());
-        holder.last_title.setText(lastMonthExpenditureList.get(position).getTitle());
-        holder.last_amount.setText("Rs. "+lastMonthExpenditureList.get(position).getExpenditure());
+        try {
+            holder.last_date.setText(lastMonthExpenditureList.get(position).getDate());
+            holder.last_title.setText(lastMonthExpenditureList.get(position).getTitle());
+            holder.last_amount.setText("Rs. " + lastMonthExpenditureList.get(position).getExpenditure());
+
+            /*if (!lastMonthExpenditureList.isEmpty() || lastMonthExpenditureList.size() > 0) { // at first the list comes with empty data due to fast data transfer
+
+            }*/
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

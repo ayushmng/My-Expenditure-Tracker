@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:hint="Expenditure Amount"
-        android:inputType="phone"
+        android:inputType="number"
         android:lines="1"
         android:maxLength="9"
         android:maxLines="1"

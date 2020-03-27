@@ -6,7 +6,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ayush.myexpendituretracker.Database.View.DashboardActivity;
 import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 
 public class SplashActivity extends AppCompatActivity {

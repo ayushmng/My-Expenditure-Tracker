@@ -1,10 +1,8 @@
-package com.ayush.myexpendituretracker.Database.View;
+package com.ayush.myexpendituretracker.View;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -33,8 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
 import com.ayush.myexpendituretracker.DAO.TotalExpenditure;
-import com.ayush.myexpendituretracker.Database.MyExpenditureModel;
-import com.ayush.myexpendituretracker.Database.MyExpenditureViewModel;
+import com.ayush.myexpendituretracker.DAO.MyExpenditureModel;
+import com.ayush.myexpendituretracker.Repository.MyExpenditureViewModel;
 import com.ayush.myexpendituretracker.LoginActivity;
 import com.ayush.myexpendituretracker.R;
 import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
@@ -389,5 +387,11 @@ public class DashboardActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT).show();
         }
         mBackPressed = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAllViewModels();
     }
 }

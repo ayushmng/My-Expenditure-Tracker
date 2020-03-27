@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ayush.myexpendituretracker.Database.View.DashboardActivity;
+import com.ayush.myexpendituretracker.View.DashboardActivity;
 import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
