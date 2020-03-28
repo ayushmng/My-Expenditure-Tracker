@@ -33,7 +33,7 @@ import com.ayush.myexpendituretracker.DAO.LastMonthExpenditure;
 import com.ayush.myexpendituretracker.DAO.TotalExpenditure;
 import com.ayush.myexpendituretracker.DAO.MyExpenditureModel;
 import com.ayush.myexpendituretracker.Repository.MyExpenditureViewModel;
-import com.ayush.myexpendituretracker.LoginActivity;
+import com.ayush.myexpendituretracker.StartupActivity.LoginActivity;
 import com.ayush.myexpendituretracker.R;
 import com.ayush.myexpendituretracker.SharedPreference.MySharedPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
