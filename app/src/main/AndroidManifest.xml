@@ -9,12 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".OnBoarding.OnBoardingActivity"></activity>
         <activity
-            android:name=".DashboardActivity"
-            android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SplashActivity">
+            android:name=".View.DashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StartupActivity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StartupActivity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
