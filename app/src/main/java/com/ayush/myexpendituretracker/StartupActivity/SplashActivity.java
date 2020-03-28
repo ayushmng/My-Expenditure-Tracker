@@ -31,7 +31,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 if (settings.getBoolean("my_first_time", true)) {
                     //the app is being launched for first time, do something
-                    Log.d("Comments", "First time");
                     startActivity(new Intent(SplashActivity.this, OnBoardingActivity.class));
                     // record the fact that the app has been started at least once
                     settings.edit().putBoolean("my_first_time", false).commit();
